@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.startup.Initializer
 import com.example.theme.view.TButton
 import com.example.theme.view.TImageView
@@ -16,13 +17,13 @@ class ThemeChangeInitialzer : Initializer<Unit> {
         (context as? Application)?.let { application ->
             ThemeChangeManager.init(application) { parent, name, context, attrs ->
                 var view: View? = null
-//                if (context !is Activity) {
-                when (name) {
-                    "TextView" -> view = TTextView(context, attrs)
-                    "ImageView" -> view = TImageView(context, attrs)
-                    "Button" -> view = TButton(context, attrs)
+                if (context !is AppCompatActivity) {
+                    when (name) {
+                        "TextView" -> view = TTextView(context, attrs)
+                        "ImageView" -> view = TImageView(context, attrs)
+                        "Button" -> view = TButton(context, attrs)
+                    }
                 }
-//                }
                 view
             }
         }

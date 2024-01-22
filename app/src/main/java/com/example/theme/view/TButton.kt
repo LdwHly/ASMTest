@@ -3,7 +3,7 @@ package com.example.theme.view
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Button
-import com.example.theme.api.IThemeChange
+import com.ldw.theme.api.IThemeChange
 
 class TButton : Button, IThemeChange {
     constructor(context: Context?) : super(context)

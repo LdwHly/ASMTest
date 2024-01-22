@@ -1,17 +1,15 @@
-package com.example.theme.api
+package com.ldw.theme.api
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater.Factory2
 import android.view.View
-import com.example.theme.view.TButton
-import com.example.theme.view.TImageView
-import com.example.theme.view.TTextView
 import java.lang.ref.WeakReference
 
 class Factory2Poxy(
     private var delegate: Factory2?,
-    private val obverse: MutableList<WeakReference<IThemeChange>>
+    private val obverse: MutableList<WeakReference<IThemeChange>>,
+    private val iCreateView: ICreateView
 ) : Factory2 {
     init {
         if (delegate == null) {
@@ -58,13 +56,8 @@ class Factory2Poxy(
         context: Context,
         attrs: AttributeSet
     ): View? {
-        var view: View? = null
-        when (name) {
-            "TextView" -> view = TTextView(context, attrs)
-            "ImageView" -> view = TImageView(context, attrs)
-            "Button" -> view = TButton(context, attrs)
-        }
-        if (view is  IThemeChange ) {
+        var view: View? = iCreateView.realCreateView(parent, name, context, attrs)
+        if (view is IThemeChange) {
             obverse.add(WeakReference(view))
         }
         return view

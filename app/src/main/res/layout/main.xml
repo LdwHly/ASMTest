@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:layout_marginTop="200dp"
         android:layout_width="wrap_content"
         android:src="@drawable/img_card_training_fail_1"
         android:layout_height="wrap_content"/>

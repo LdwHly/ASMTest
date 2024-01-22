@@ -1,6 +1,7 @@
 package com.example.theme.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.TextView
@@ -46,9 +47,19 @@ class TTextView : TextView, IThemeChange {
         super.setTextColor(color)
         mTextColorResId = ID
     }
+
+    override fun setTextColor(colors: ColorStateList?) {
+        super.setTextColor(colors)
+        mTextColorResId = ID
+    }
+
     override fun onThemeChange() {
         if (mTextColorResId != ID) {
             super.setTextColor(ContextCompat.getColor(context, mTextColorResId))
         }
+        if (mTextColorHintResId != ID) {
+            super.setHintTextColor(ContextCompat.getColor(context, mTextColorHintResId))
+        }
+
     }
 }

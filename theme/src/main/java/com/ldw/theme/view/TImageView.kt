@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ImageView
-import com.example.myapplication.R
+import com.ldw.theme.R
 import com.ldw.theme.api.IThemeChange
 
 class TImageView : ImageView, IThemeChange {

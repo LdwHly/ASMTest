@@ -13,7 +13,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application"
+rootProject.name = "ASMTest"
 include ':app'
 include ':lib'
 include ':theme'
+println(" DAYI  setting")

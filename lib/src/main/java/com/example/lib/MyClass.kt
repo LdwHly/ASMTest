@@ -1,4 +1,11 @@
 package com.example.lib
 
-class MyClass {
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
+class MyClass : Plugin<Project> {
+    override fun apply(target: Project) {
+        println("DDDDDD")
+    }
+
 }

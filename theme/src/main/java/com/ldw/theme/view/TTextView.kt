@@ -2,11 +2,10 @@ package com.ldw.theme.view
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.myapplication.R
+import com.ldw.theme.R
 import com.ldw.theme.api.IThemeChange
 import com.ldw.theme.api.IThemeChange.Companion.ID
 

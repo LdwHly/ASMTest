@@ -15,10 +15,11 @@ object ThemeChangeManager {
     private val map = ConcurrentHashMap<Context, List<WeakReference<IThemeChange>>>()
 
     fun init(context: Application, iCreateView: ICreateView) {
+        val createViewPoxy = CreateViewPoxy(iCreateView)
         context.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                from(activity, iCreateView)
+                from(activity, createViewPoxy)
             }
 
             override fun onActivityStarted(activity: Activity) {}
@@ -30,7 +31,7 @@ object ThemeChangeManager {
                 map.remove(activity)
             }
         })
-        from(context, iCreateView)
+        from(context, createViewPoxy)
         context.registerComponentCallbacks(object : ComponentCallbacks {
             override fun onConfigurationChanged(newConfig: Configuration) {
                 if (newConfig.uiMode != Configuration.UI_MODE_NIGHT_UNDEFINED) {

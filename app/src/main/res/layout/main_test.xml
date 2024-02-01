@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/tv_test"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:text="EEEEE"
         android:textColor="@color/main_bg"
         android:layout_height="wrap_content"/>

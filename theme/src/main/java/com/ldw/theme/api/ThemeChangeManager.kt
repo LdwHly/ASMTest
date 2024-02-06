@@ -12,9 +12,13 @@ import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentHashMap
 
 object ThemeChangeManager {
-    private val map = ConcurrentHashMap<Context, List<WeakReference<IThemeChange>>>()
 
-    fun init(context: Application, iCreateView: ICreateView) {
+    private val map =
+        ConcurrentHashMap<Context, DataBean3<LayoutInflater, LayoutInflater, ArrayList<WeakReference<IThemeChange>>>>()
+    private var replaceAll = false
+
+    fun init(context: Application, iCreateView: ICreateView, replaceAll: Boolean) {
+        this.replaceAll = replaceAll
         val createViewPoxy = CreateViewPoxy(iCreateView)
         context.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
@@ -36,7 +40,7 @@ object ThemeChangeManager {
             override fun onConfigurationChanged(newConfig: Configuration) {
                 if (newConfig.uiMode != Configuration.UI_MODE_NIGHT_UNDEFINED) {
                     for (key in map.keys) {
-                        map[key]?.filter { it.get() != null }?.map { it.get() }?.forEach {
+                        map[key]?.field3?.filter { it.get() != null }?.map { it.get() }?.forEach {
                             it?.onThemeChange()
                         }
                     }
@@ -49,18 +53,31 @@ object ThemeChangeManager {
 
 
     private fun from(context: Context, iCreateView: ICreateView) {
-        var list = map[context]
-        if (list == null) {
-            list = ArrayList()
-            val src = LayoutInflater.from(context)
-            val factory2: LayoutInflater.Factory2 = Factory2Poxy(src.factory2, list, iCreateView)
-            if (src.factory2 == null) {
-                LayoutInflaterCompat.setFactory2(src, factory2)
-            } else if (src.factory2 !is Factory2Poxy) {
-                ReflectUtils.setFieldValue(src, "mFactory2", factory2)
-                ReflectUtils.setFieldValue(src, "mFactory", factory2)
+        var bean3 = map[context]
+        if (bean3 == null) {
+            bean3 = DataBean3<LayoutInflater, LayoutInflater, ArrayList<WeakReference<IThemeChange>>>().apply {
+                field3 = ArrayList()
             }
-            map[context] = list
+            val src = LayoutInflater.from(context)
+            val factory2: LayoutInflater.Factory2 = Factory2Poxy(src.factory2, bean3.field3, iCreateView)
+            bean3.field1 = src.cloneInContext(context).apply {
+                LayoutInflaterCompat.setFactory2(this, factory2)
+            }
+
+            if (replaceAll) {
+                if (src.factory2 == null) {
+                    LayoutInflaterCompat.setFactory2(src, factory2)
+                } else if (src.factory2 !is Factory2Poxy) {
+                    ReflectUtils.setFieldValue(src, "mFactory2", factory2)
+                    ReflectUtils.setFieldValue(src, "mFactory", factory2)
+                }
+            }
+            bean3.field2 = src
+            map[context] = bean3
         }
+    }
+
+    fun from(context: Context): LayoutInflater {
+        return map[context]?.field1 ?: LayoutInflater.from(context)
     }
 }

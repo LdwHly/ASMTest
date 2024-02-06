@@ -33,7 +33,7 @@ publishing {
             // aar包依赖信息
             groupId "io.github.ldwhly"// 替换成自己的
             artifactId "theme"// 替换成自己的
-            version "0.0.5-alpha"// 替换成自己的
+            version "0.0.6-alpha"// 替换成自己的
 
             afterEvaluate {
                 from components.release

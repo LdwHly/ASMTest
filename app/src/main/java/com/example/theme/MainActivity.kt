@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
         val tvRoot: LinearLayout = findViewById(R.id.tv_root)
-        LayoutInflater.from(this.applicationContext).inflate(R.layout.main_test, tvRoot, true)
+        LayoutInflater.from(this).inflate(R.layout.main_test, tvRoot, true)
             .findViewById<ImageView>(R.id.iv_icon)
             .setImageResource(R.drawable.img_card_training_fail_1)
 

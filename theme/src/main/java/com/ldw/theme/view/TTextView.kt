@@ -9,7 +9,7 @@ import com.ldw.theme.R
 import com.ldw.theme.api.IThemeChange
 import com.ldw.theme.api.IThemeChange.Companion.ID
 
-class TTextView : TextView, IThemeChange {
+open class TTextView : TextView, IThemeChange {
     private var mTextColorHintResId: Int = ID
     private var mTextColorResId: Int = ID
 

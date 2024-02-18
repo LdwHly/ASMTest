@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.widget.Button
 import com.ldw.theme.api.IThemeChange
 
-class TButton : Button, IThemeChange {
+open class TButton : Button, IThemeChange {
     constructor(context: Context?) : super(context)
 
     @JvmOverloads

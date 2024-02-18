@@ -10,7 +10,7 @@ import android.widget.ImageView
 import com.ldw.theme.R
 import com.ldw.theme.api.IThemeChange
 
-class TImageView : ImageView, IThemeChange {
+open class TImageView : ImageView, IThemeChange {
     constructor(context: Context?) : super(context)
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) : super(

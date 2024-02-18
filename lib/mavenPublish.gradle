@@ -1,0 +1,54 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+publishing {
+    publications {
+        release(MavenPublication) {
+            pom {
+                // 库信息
+                name = 'replacesuperclass'// 替换成自己的
+                description = 'android replacesuperclass'// 替换成自己的
+                url = 'https://github.com/LdwHly/ASMTest'// 替换成自己的
+                // 开放许可证书，可以自己换其他的
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                // 开发者信息
+                developers {
+                    developer {
+                        id = 'orireplacesuperclass'// 替换成自己的
+                        name = 'ldwhly'// 替换成自己的
+                        email = '1210984300@qq.com'// 替换成自己的
+                    }
+                }
+                // scm
+                scm {
+                    connection = 'https://github.com/LdwHly/ASMTest.git'// 替换成自己的
+                    developerConnection = 'https://github.com/LdwHly/ASMTest.git-'// 替换成自己的
+                    url = 'https://github.com/LdwHly/ASMTest'// 替换成自己的
+                }
+            }
+            // aar包依赖信息
+            groupId "io.github.ldwhly"// 替换成自己的
+            artifactId "replacesuperclass"// 替换成自己的
+            version "0.0.0-alpha"// 替换成自己的
+
+        }
+    }
+    repositories {
+        maven {
+//            https://s01.oss.sonatype.org/#stagingRepositories
+            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username sonaUsername // sonatype username
+                password sonaPassword // sonatype password
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.release
+}

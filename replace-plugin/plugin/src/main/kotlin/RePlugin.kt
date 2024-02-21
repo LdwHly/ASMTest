@@ -16,7 +16,7 @@ class RePlugin : Plugin<Project> {
             log("variant: ${variant.name}")
             variant.instrumentation.apply {
                 transformClassesWith(ReplaceClassVisitorFactory::class.java, InstrumentationScope.ALL) {}
-                setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
+                setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_CLASSES)
             }
         }
     }

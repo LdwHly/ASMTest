@@ -6,8 +6,9 @@
 
     <TextView
         android:id="@+id/tv_test"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:text="EEEEE"
+        android:textSize="44dp"
         android:textColor="@color/main_bg"
         android:layout_height="wrap_content"/>
 
@@ -15,5 +16,12 @@
         android:id="@+id/iv_icon"
         android:layout_width="wrap_content"
         android:src="@drawable/img_card_training_fail_1"
+        android:layout_height="wrap_content"/>。
+
+    <com.example.theme.api.CTextView
+        android:layout_width="match_parent"
+        android:text="EEEEE"
+        android:textSize="44dp"
+        android:textColor="@color/main_bg"
         android:layout_height="wrap_content"/>
 </LinearLayout>

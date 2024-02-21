@@ -24,35 +24,32 @@ abstract class ReplaceClassVisitorFactory : AsmClassVisitorFactory<Instrumentati
                 interfaces: Array<out String>?
             ) {
                 println("className:$className superName:$superName")
-                var newList: Array<out String>? = interfaces
-                interfaces?.let {
-                    if (!interfaces.contains("com/ldw/theme/api/IThemeChange")) {
-                        val temp = interfaces.toMutableList()
-                        temp.add("com/ldw/theme/api/IThemeChange")
-                        newList = temp.toTypedArray()
-                    }
-                } ?: kotlin.run {
-                    newList = Array(1) {
-                        "com/ldw/theme/api/IThemeChange"
-                    }
+                var newSuperName = superName
+                if (superName == "androidx/appcompat/widget/AppCompatImageView" || superName == "android/widget/ImageView") {
+                    newSuperName = "com/ldw/theme/view/TImageView"
+                } else if (superName == "android/widget/TextView") {
+                    newSuperName = "com/ldw/theme/view/TTextView"
                 }
                 super.visit(
                     version,
                     access,
                     name,
                     signature,
-                    "com/ldw/theme/view/TImageView",
-                    newList
+                    newSuperName,
+                    interfaces
                 )
             }
         }
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
-//        println("isInstrumentable:${classData.className} ")
-//        return false
-        return classData.className != "androidx.appcompat.widget.AppCompatImageView" && classData.className != "com.ldw.theme.view.TImageView" &&
+        val img = classData.className != "androidx.appcompat.widget.AppCompatImageView" && classData.className != "com.ldw.theme.view.TImageView" &&
                 (classData.superClasses[0] == "android.widget.ImageView" ||
                         classData.superClasses[0] == "androidx.appcompat.widget.AppCompatImageView")
+        val tv = classData.className != "com.ldw.theme.view.TTextView" && (classData.superClasses[0] == "android.widget.TextView")
+//        if (classData.className.startsWith("androidx.appcompat.widget")) {
+//            println("isInstrumentable className:${classData.className}")
+//        }
+        return img || tv
     }
 }

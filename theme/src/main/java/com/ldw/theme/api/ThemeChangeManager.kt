@@ -6,6 +6,9 @@ import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.view.LayoutInflaterCompat
 import java.lang.ref.WeakReference
@@ -13,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 object ThemeChangeManager {
 
-    private val map =
+    val map =
         ConcurrentHashMap<Context, DataBean3<LayoutInflater, LayoutInflater, ArrayList<WeakReference<IThemeChange>>>>()
     private var replaceAll = false
 
@@ -38,12 +41,18 @@ object ThemeChangeManager {
         from(context, createViewPoxy)
         context.registerComponentCallbacks(object : ComponentCallbacks {
             override fun onConfigurationChanged(newConfig: Configuration) {
-                if (newConfig.uiMode != Configuration.UI_MODE_NIGHT_UNDEFINED) {
-                    for (key in map.keys) {
-                        map[key]?.field3?.filter { it.get() != null }?.map { it.get() }?.forEach {
-                            it?.onThemeChange()
+                val currentNightMode = newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                Log.i("ThemeChangeManager","currentNightMode=$currentNightMode lastNightMode=$lastNightMode")
+                if (currentNightMode != lastNightMode) {
+                    lastNightMode = currentNightMode
+                    h.removeCallbacksAndMessages(null)
+                    h.postDelayed( {
+                        for (key in map.keys) {
+                            map[key]?.field3?.filter { it.get() != null }?.map { it.get() }?.forEach {
+                                it?.onThemeChange()
+                            }
                         }
-                    }
+                    },500)
                 }
             }
 
@@ -51,15 +60,21 @@ object ThemeChangeManager {
         })
     }
 
+    var lastNightMode = 0
+    var h = Handler(Looper.getMainLooper())
 
     private fun from(context: Context, iCreateView: ICreateView) {
         var bean3 = map[context]
         if (bean3 == null) {
-            bean3 = DataBean3<LayoutInflater, LayoutInflater, ArrayList<WeakReference<IThemeChange>>>().apply {
-                field3 = ArrayList()
-            }
+            bean3 =
+                DataBean3<LayoutInflater, LayoutInflater, ArrayList<WeakReference<IThemeChange>>>().apply {
+                    field3 = ArrayList()
+                }
             val src = LayoutInflater.from(context)
-            val factory2: LayoutInflater.Factory2 = Factory2Poxy(src.factory2, bean3.field3, iCreateView)
+
+            val factory2: LayoutInflater.Factory2 =
+                Factory2Poxy(src.factory2, bean3.field3, iCreateView)
+
             bean3.field1 = src.cloneInContext(context).apply {
                 LayoutInflaterCompat.setFactory2(this, factory2)
             }

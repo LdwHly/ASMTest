@@ -13,6 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.theme.api.NetworkUtils
+import com.ldw.theme.api.IThemeChange
+import com.ldw.theme.view.TTextView
 
 class MainActivity : AppCompatActivity() {
     var tvRoot: LinearLayout? = null
@@ -45,7 +47,11 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }"
             }
-            tvTest?.text = info
+            if (tvTest is IThemeChange) {
+                tvTest.text = info
+                tvTest.onThemeChange()
+            }
+
         }
     }
 

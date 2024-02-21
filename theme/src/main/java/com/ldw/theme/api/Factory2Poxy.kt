@@ -2,6 +2,7 @@ package com.ldw.theme.api
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater.Factory2
 import android.view.View
 import java.lang.ref.WeakReference
@@ -45,6 +46,9 @@ class Factory2Poxy(
         var view = realCreateView(parent, name, context, attrs)
         if (view == null) {
             view = delegate!!.onCreateView(parent, name, context, attrs)
+        }
+        if (name.endsWith("CTextView")) {
+            Log.i("Factory2Poxy", name)
         }
         if (view is IThemeChange) {
             obverse.add(WeakReference(view))

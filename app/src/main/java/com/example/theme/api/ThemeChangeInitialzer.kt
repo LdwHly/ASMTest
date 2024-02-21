@@ -9,9 +9,10 @@ class ThemeChangeInitialzer : Initializer<Unit> {
 
     override fun create(context: Context) {
         (context as? Application)?.let { application ->
-            ThemeChangeManager.init(application) { parent, name, context, attrs ->
+            ThemeChangeManager.init(application, { parent, name, context, attrs ->
               null
-            }
+            },true)
+            NetworkUtils.registerNetConnection(application, NetworkStatusCallback(application))
         }
     }
 

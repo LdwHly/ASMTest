@@ -68,6 +68,6 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation 'androidx.startup:startup-runtime:1.1.1'
 
-//    implementation project(':theme')
-    implementation 'io.github.ldwhly:theme:0.0.3-alpha'
+    implementation project(':theme')
+//    implementation 'io.github.ldwhly:theme:0.0.3-alpha'
 }

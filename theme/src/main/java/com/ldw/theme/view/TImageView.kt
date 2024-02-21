@@ -7,11 +7,12 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import com.ldw.theme.R
 import com.ldw.theme.api.IThemeChange
 
-open class TImageView : ImageView, IThemeChange {
-    constructor(context: Context?) : super(context)
+open class TImageView : AppCompatImageView, IThemeChange {
+    constructor(context: Context) : super(context)
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) : super(
         context,
@@ -36,12 +37,6 @@ open class TImageView : ImageView, IThemeChange {
             a?.recycle()
         }
     }
-    constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private var mSrcResId = IThemeChange.ID
     private var mBackgroundResId = IThemeChange.ID

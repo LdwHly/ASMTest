@@ -18,12 +18,11 @@ class CreateViewPoxy(private val mDelegate: ICreateView) : ICreateView {
     ): View? {
         var view = mDelegate.realCreateView(parent, name, context, attrs)
         if (view == null) {
-            if (context !is AppCompatActivity) {
-                when (name) {
-                    "TextView" -> view = TTextView(context, attrs)
-                    "ImageView" -> view = TImageView(context, attrs)
-                    "Button" -> view = TButton(context, attrs)
-                }
+            when (name) {
+                "TextView" -> view = TTextView(context, attrs)
+                "ImageView" -> view = TImageView(context, attrs)
+                "androidx.appcompat.widget.AppCompatImageView" -> view = TImageView(context, attrs)
+                "Button" -> view = TButton(context, attrs)
             }
         }
         return view

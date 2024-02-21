@@ -42,8 +42,14 @@ class Factory2Poxy(
         context: Context,
         attrs: AttributeSet
     ): View? {
-        val view = realCreateView(parent, name, context, attrs)
-        return view ?: delegate!!.onCreateView(parent, name, context, attrs)
+        var view = realCreateView(parent, name, context, attrs)
+        if (view == null) {
+            view = delegate!!.onCreateView(parent, name, context, attrs)
+        }
+        if (view is IThemeChange) {
+            obverse.add(WeakReference(view))
+        }
+        return view
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
@@ -57,9 +63,6 @@ class Factory2Poxy(
         attrs: AttributeSet
     ): View? {
         var view: View? = iCreateView.realCreateView(parent, name, context, attrs)
-        if (view is IThemeChange) {
-            obverse.add(WeakReference(view))
-        }
         return view
     }
 }

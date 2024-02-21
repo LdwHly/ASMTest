@@ -23,15 +23,17 @@ abstract class ReplaceClassVisitorFactory : AsmClassVisitorFactory<Instrumentati
                 superName: String?,
                 interfaces: Array<out String>?
             ) {
-                println("className:$className superName:$superName interfaces:${interfaces?.isNotEmpty()?.let {
-                    interfaces[0] 
-                }}")
+                println("className:$className superName:$superName")
                 var newList: Array<out String>? = interfaces
-                interfaces?.isNotEmpty()?.let {
+                interfaces?.let {
                     if (!interfaces.contains("com/ldw/theme/api/IThemeChange")) {
                         val temp = interfaces.toMutableList()
                         temp.add("com/ldw/theme/api/IThemeChange")
                         newList = temp.toTypedArray()
+                    }
+                } ?: kotlin.run {
+                    newList = Array(1) {
+                        "com/ldw/theme/api/IThemeChange"
                     }
                 }
                 super.visit(
@@ -47,7 +49,10 @@ abstract class ReplaceClassVisitorFactory : AsmClassVisitorFactory<Instrumentati
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
-        println("isInstrumentable:${classData.className} ")
-        return classData.className != "com.ldw.theme.view.TImageView" && classData.superClasses[0] == "android.widget.ImageView"
+//        println("isInstrumentable:${classData.className} ")
+//        return false
+        return classData.className != "androidx.appcompat.widget.AppCompatImageView" && classData.className != "com.ldw.theme.view.TImageView" &&
+                (classData.superClasses[0] == "android.widget.ImageView" ||
+                        classData.superClasses[0] == "androidx.appcompat.widget.AppCompatImageView")
     }
 }

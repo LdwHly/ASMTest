@@ -3,6 +3,7 @@ import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters
 import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
 abstract class ReplaceClassVisitorFactory : AsmClassVisitorFactory<InstrumentationParameters.None> {
@@ -25,7 +26,7 @@ abstract class ReplaceClassVisitorFactory : AsmClassVisitorFactory<Instrumentati
             ) {
                 println("className:$className superName:$superName")
                 var newSuperName = superName
-                if (superName == "androidx/appcompat/widget/AppCompatImageView" || superName == "android/widget/ImageView") {
+                if (superName == "android/widget/ImageView") {
                     newSuperName = "com/ldw/theme/view/TImageView"
                 } else if (superName == "android/widget/TextView") {
                     newSuperName = "com/ldw/theme/view/TTextView"
@@ -39,17 +40,42 @@ abstract class ReplaceClassVisitorFactory : AsmClassVisitorFactory<Instrumentati
                     interfaces
                 )
             }
+
+            override fun visitMethod(
+                access: Int,
+                name: String?,
+                descriptor: String?,
+                signature: String?,
+                exceptions: Array<out String>?
+            ): MethodVisitor {
+                println("visitMethod ${classContext.currentClassData.superClasses[0]} name:${name} descriptor:$descriptor signature:$signature exceptions:${exceptions?.toMutableList().toString()}")
+                val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
+                if (name == "<init>") {
+                    if (classContext.currentClassData.superClasses[0] == "android.widget.TextView") {
+                        return EditTextViewMethodVisitor(api, mv)
+                    } else if (classContext.currentClassData.superClasses[0] == "android.widget.ImageView"){
+                        return EditImageViewMethodVisitor(api, mv)
+                    }
+                }
+                return mv
+            }
+
+            override fun visitEnd() {
+                super.visitEnd()
+            }
         }
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
-        val img = classData.className != "androidx.appcompat.widget.AppCompatImageView" && classData.className != "com.ldw.theme.view.TImageView" &&
-                (classData.superClasses[0] == "android.widget.ImageView" ||
-                        classData.superClasses[0] == "androidx.appcompat.widget.AppCompatImageView")
+//        println("我的:${classData.className}")
+        val img = kotlin.run {
+//            classData.className != "androidx.appcompat.widget.AppCompatImageView" && classData.className != "com.ldw.theme.view.TImageView" &&
+//                    (classData.superClasses[0] == "android.widget.ImageView" ||
+//                            classData.superClasses[0] == "androidx.appcompat.widget.AppCompatImageView")
+            classData.className != "com.ldw.theme.view.TImageView" && classData.superClasses[0] == "android.widget.ImageView"
+        }
         val tv = classData.className != "com.ldw.theme.view.TTextView" && (classData.superClasses[0] == "android.widget.TextView")
-//        if (classData.className.startsWith("androidx.appcompat.widget")) {
-//            println("isInstrumentable className:${classData.className}")
-//        }
         return img || tv
     }
+
 }

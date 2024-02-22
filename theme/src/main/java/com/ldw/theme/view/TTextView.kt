@@ -20,9 +20,9 @@ open class TTextView : TextView, IThemeChange {
         Log.d("dd", "su")
     }
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+    constructor(context: Context) : this(context,null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
@@ -46,15 +46,15 @@ open class TTextView : TextView, IThemeChange {
     }
 
 
-    override fun setTextColor(color: Int) {
-        super.setTextColor(color)
-        mTextColorResId = ID
-    }
-
-    override fun setTextColor(colors: ColorStateList?) {
-        super.setTextColor(colors)
-        mTextColorResId = ID
-    }
+//    override fun setTextColor(color: Int) {
+//        super.setTextColor(color)
+//        mTextColorResId = ID
+//    }
+//
+//    override fun setTextColor(colors: ColorStateList?) {
+//        super.setTextColor(colors)
+//        mTextColorResId = ID
+//    }
 
     override fun onThemeChange() {
         if (mTextColorResId != ID) {
@@ -65,8 +65,8 @@ open class TTextView : TextView, IThemeChange {
         }
     }
 
-    override fun setText(text: CharSequence?, type: BufferType?) {
-        super.setText(text, type)
-    }
+//    override fun setText(text: CharSequence?, type: BufferType?) {
+//        super.setText(text, type)
+//    }
 
 }

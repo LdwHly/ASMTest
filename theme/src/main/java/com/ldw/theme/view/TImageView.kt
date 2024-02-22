@@ -10,9 +10,13 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.ldw.theme.R
 import com.ldw.theme.api.IThemeChange
+import com.ldw.theme.api.ThemeChangeManager
+import java.lang.ref.WeakReference
 
-open class TImageView : AppCompatImageView, IThemeChange {
-    constructor(context: Context) : super(context)
+open class TImageView : ImageView, IThemeChange {
+
+    private var isInit = true
+    constructor(context: Context) : this(context, null)
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) : super(
         context,
@@ -36,7 +40,11 @@ open class TImageView : AppCompatImageView, IThemeChange {
         } finally {
             a?.recycle()
         }
+        ThemeChangeManager.map[context]?.field3?.add(WeakReference(this))
+        isInit = true
     }
+
+
 
     private var mSrcResId = IThemeChange.ID
     private var mBackgroundResId = IThemeChange.ID

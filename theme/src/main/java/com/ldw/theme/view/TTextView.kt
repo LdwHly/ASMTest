@@ -39,9 +39,7 @@ open class TTextView : TextView, IThemeChange {
                 R.styleable.LTextAppearance_android_textColorHint, ID
             )
         }
-        ThemeChangeManager.map[context]?.let {
-            it.field3.add(WeakReference(this))
-        }
+        ThemeChangeManager.map[context]?.field3?.add(WeakReference(this))
         a.recycle()
     }
 
